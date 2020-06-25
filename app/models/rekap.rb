@@ -1,0 +1,2 @@
+class Rekap < ApplicationRecord
+end

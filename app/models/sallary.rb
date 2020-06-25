@@ -1,0 +1,2 @@
+class Sallary < ApplicationRecord
+end
