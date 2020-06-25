@@ -1,6 +1,6 @@
 class CreateUserData < ActiveRecord::Migration[6.0]
   def change
-    create_table :user_data do |t|
+    create_table :user_datas do |t|
       t.string  :username
       t.string  :email
       t.datetime  :birthdate
