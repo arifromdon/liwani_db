@@ -9,9 +9,37 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      	post 'auth/token/request', to: 'authentications#request_token'
-        
-        get 'stock', to: 'stock#index'
+    	post 'auth/token/request', to: 'authentications#request_token'
+      post 'auth/forgot', to: 'authentications#forgot'
+      
+      get 'stock', to: 'stock#index'
+
+      resource :employees, only:[] do
+        get "/", to: "employee#index"
+        get "/:id", to: "employee#show"
+
+        post "/create", to: "employee#create"
+        post "/update/:id", to: "employee#update"
+
+        delete "/delete/:id", to: "employee#delete"
+      end
+
+      resource :stock, only:[] do
+        get "/", to: "stock#index"
+        get "/:id", to: "stock#show"
+
+        post "/create", to: "stock#create"
+        post "/update/:id", to: "stock#update"
+
+        delete "/delete/:id", to: "stock#delete"
+      end
+
+      resource :absent, only:[] do
+        get "/", to: "absent#index"
+
+        post "/create", to: "absent#create"
+        post "/update/:id", to: "absent#update"
+      end
    	end
   end
 end

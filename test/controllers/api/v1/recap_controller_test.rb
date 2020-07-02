@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UserDatumTest < ActiveSupport::TestCase
+class Api::V1::RecapControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

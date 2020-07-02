@@ -4,8 +4,10 @@ class CreateAbsents < ActiveRecord::Migration[6.0]
       t.string  :employee_name
       t.integer :entry_hour
       t.integer :out_hour
-      t.boolean :status
-      t.integer :date
+      t.string  :position
+      t.datetime  :date
+      t.integer :status_absent
+      t.integer :total_absent
       t.timestamps
     end
   end
