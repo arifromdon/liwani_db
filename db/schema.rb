@@ -10,22 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_30_130133) do
+ActiveRecord::Schema.define(version: 2020_07_02_145208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "absents", force: :cascade do |t|
-    t.string "employee_name"
-    t.integer "entry_hour"
-    t.integer "out_hour"
-    t.string "position"
     t.datetime "date"
-    t.boolean "status_absent"
-    t.integer "total_absent"
+    t.integer "status_absent"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_datas_id"
+    t.integer "active"
+    t.bigint "employee_id"
+    t.datetime "entry_hour"
+    t.datetime "out_hour"
+    t.index ["employee_id"], name: "index_absents_on_employee_id"
     t.index ["user_datas_id"], name: "index_absents_on_user_datas_id"
   end
 
@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 2020_06_30_130133) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "join"
+    t.integer "total_absent_monthly", default: 0
+    t.integer "total_absent", default: 0
   end
 
   create_table "rekaps", force: :cascade do |t|

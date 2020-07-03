@@ -36,6 +36,7 @@ Rails.application.routes.draw do
 
       resource :absent, only:[] do
         get "/", to: "absent#index"
+        get "/show/:id", to: "absent#show"
 
         post "/create", to: "absent#create"
         post "/update/:id", to: "absent#update"

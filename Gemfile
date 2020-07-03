@@ -16,6 +16,13 @@ gem 'devise'
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+gem 'annotate'
+gem 'better_errors'
+gem 'binding_of_caller'
+gem 'pry-rails'
+gem 'pry-byebug'
+gem 'awesome_print'
+gem 'kaminari', '~> 0.16.3'
 
 gem 'jwt'
 

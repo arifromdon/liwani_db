@@ -4,17 +4,37 @@ module Api::V1
 
     def index
 
-      @data = Absent.all
+      @data = Absent.active_absent
 
-      json_response({ data: @data })
+      json_response({ data: @data }, "Berhasil", 200)
 
+    end
+
+    def show
+      @data = Employee.find_by( id: params[:id])
+
+      if @data.present?
+        json_response({ data: @data.absents }, "Data absent berhasil ditampilkan", 200)
+      else
+        json_response({}, "Data absent gagal ditampilkan", 404)
+      end
     end
 
     def create
 
-      @data = Employee.all
+      data_employee = Employee.find_by(email: params[:email])
 
-      json_response({ data: @data })
+      if data_employee.nil?
+        json_response({}, "Data karyawan tidak ada", 400)
+      else
+        @data = Absent.create_absent(data_employee)
+
+        if @data[0] == true
+          json_response({ data: @data }, @data[1], 200)
+        else
+          json_response({}, @data[1], 404)
+        end
+      end
 
     end
 
@@ -26,12 +46,19 @@ module Api::V1
         json_response({ data: {} }, "Data absent tidak ditemukan", 404)
       end
 
-      @data.entry_hour = params[:entry_hour]
-      @data.out_hour = params[:out_hour]
-      @data.date = params[:date]
+      if params[:status_absent] == 'masuk'
+        @data.entry_hour = Time.now
+      else
+        @data.out_hour = Time.now
+        @data.employee.total_absent += 1
+        @data.employee.total_absent_monthly += 1
+      end
+
       @data.status_absent = params[:status_absent]
 
       if @data.save
+        @data.employee.save
+
         json_response({ data: @data }, "Data absent berhasil diubah", 200)
       else
         json_response({}, "Data absent gagal diubah", 400)
