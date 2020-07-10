@@ -45,7 +45,6 @@ class Absent < ApplicationRecord
     end
 
     return datas
-
   end
 
 end

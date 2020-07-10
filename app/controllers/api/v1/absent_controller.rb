@@ -4,9 +4,7 @@ module Api::V1
 
     def index
 
-      @data = Absent.active_absent
-
-      json_response({ data: @data }, "Berhasil", 200)
+      @data = Absent.all.page(params[:page]).per(params[:per])
 
     end
 
@@ -28,7 +26,7 @@ module Api::V1
         json_response({}, "Data karyawan tidak ada", 400)
       else
         @data = Absent.create_absent(data_employee)
-
+        Rails.logger.info "#{@data}"
         if @data[0] == true
           json_response({ data: @data }, @data[1], 200)
         else

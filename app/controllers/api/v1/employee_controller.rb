@@ -4,9 +4,15 @@ module Api::V1
 
     def index
 
-      @data = Employee.all
+      @data = Employee.all.page(params[:page]).per(params[:per])
+      @pagination = {
+        current_page: @data.current_page,
+        next_page: @data.next_page,
+        prev_page: @data.prev_page,
+        total_page: @data.total_pages
+      }
 
-      json_response({ data: @data })
+      json_response({ data: @data, pagination: @pagination }, "Berhasil", 200)
 
     end
 
@@ -20,15 +26,9 @@ module Api::V1
 
     def create
 
-      @data = Employee.new
-      @data.employee_name = params[:employee_name]
-      @data.email = params[:email]
-      @data.phone_number = params[:phone_number]
-      @data.position = params[:position]
-      @data.status = params[:status]
-      @data.join = params[:join]
+      @data = Employee.create_employee(params)
 
-      if @data.save
+      if @data
         json_response({ data: @data }, "Karyawan berhasil ditambahkan", 200)
       else
         json_response({}, "Karyawan gagal ditambahkan", 400)
