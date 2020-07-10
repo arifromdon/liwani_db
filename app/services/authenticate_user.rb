@@ -4,6 +4,9 @@ class AuthenticateUser
 	def initialize(email, password)
 		@email = email
 		@password = password
+
+		puts @email
+		puts @password
 	end
 
 	def call
@@ -16,7 +19,7 @@ class AuthenticateUser
 
 		def user
 			user = User.find_by(email: @email)
-	      	return user if user && user.valid_password?(@password)
+	    return user if user && user.valid_password?(@password)
 			raise(ExceptionHandler::AuthenticationError, "User Not Found")
 		end
 
