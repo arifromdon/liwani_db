@@ -36,9 +36,25 @@ Rails.application.routes.draw do
 
       resource :absent, only:[] do
         get "/", to: "absent#index"
+        get "/show/:id", to: "absent#show"
 
         post "/create", to: "absent#create"
         post "/update/:id", to: "absent#update"
+      end
+
+      resource :salary, only:[] do
+        get "/", to: "salary#index"
+
+        post "/update/:id", to: "salary#update_salary"
+        post "/update/cash_receipt/:id", to: "salary#update_cash_receipt"
+      end
+
+      resource :recap, only:[] do
+        get "/", to: "recap#index"
+        get "/export_salary", to: "recap#export_salary"
+
+        post "/show_sallary", to: "recap#show_sallary"
+        post "/show_stock", to: "recap#show_stock"
       end
    	end
   end

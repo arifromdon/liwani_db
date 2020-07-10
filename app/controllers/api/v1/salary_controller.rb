@@ -3,14 +3,21 @@ module Api::V1
   class SalaryController < Api::ApplicationController
 
     def index
-      @data = Sallary.all
+      data_employee = Employee.all
 
-      json_response({ data: @data })
+      if data_employee.nil?
+        # json_response({}, "Data karyawan tidak ada", 400)
+      else
+        @data = data_employee.page(params[:page]).per(params[:per])
+
+        # json_response({ data: @data })
+      end
     end
 
     def update_salary
 
-      @data = Sallary.find_by( id: params[:id] )
+      @data = Sallary.find_by(employee_id: params[:id])
+
       if @data.nil?
         json_response({ data: {} }, "Stock tidak ditemukan", 404)
       end
@@ -27,7 +34,7 @@ module Api::V1
 
     def update_cash_receipt
 
-      @data = Sallary.find_by( id: params[:id] )
+      @data = Sallary.find_by( employee_id: params[:id] )
 
       if @data.nil?
         json_response({ salary: {} }, "Data kasbon tidak ditemukan", 404)
@@ -35,11 +42,12 @@ module Api::V1
 
       @data.total_deduction = params[:total_deduction]
       @data.term_cash_receipt = params[:term_cash_receipt]
-      @data.monthly_deduction_cash_receipt = params[:monthly_deduction_cash_receipt]
-      @data.cash_receipt_date = params[:cash_receipt_date]
+      @data.monthly_deduction = params[:monthly_deduction]
+      @data.cash_receipt_date = Time.now
+      @data.remaining_deduction = @data.total_deduction - @data.monthly_deduction
 
       if @data.save
-        json_response({ data: {@data}, "Data kasbon berhasil diubah", 200 })
+        json_response({ data: @data }, "Data kasbon berhasil diubah", 200)
       else
         json_response({}, "Data kasbon gagal diubah", 400)
       end

@@ -4,9 +4,15 @@ module Api::V1
 
 		def index
 
-      @data = Stock.all
+      @data = Stock.all.page(params[:page]).per(params[:per])
+      @pagination = {
+        current_page: @data.current_page,
+        next_page: @data.next_page,
+        prev_page: @data.prev_page,
+        total_page: @data.total_pages
+      }
 
-      json_response({ data: @data })
+      json_response({ data: @data, pagination: @pagination }, "Berhasil", 200 )
 
     end
 
@@ -16,7 +22,10 @@ module Api::V1
       @data.stock_name = params[:stock_name]
       @data.in_stock = params[:in_stock]
       @data.price_stock = params[:price_stock]
-      @data.date_in = params[:date_in]
+      @data.current_stock += @data.in_stock
+      @data.total_stock = @data.total_stock + @data.current_stock + @data.out_stock
+      @data.total_price_stock = @data.price_stock * @data.total_stock
+      @data.date_in = Time.now
 
       if @data.save
         json_response({ data: @data }, "Stock berhasil ditambahkan", 200)
@@ -35,8 +44,11 @@ module Api::V1
 
       @data.in_stock = params[:in_stock]
       @data.out_stock = params[:out_stock]
-      @data.date_in = params[:date_in]
-      @data.date_out = params[:date_out]
+      @data.current_stock = @data.current_stock + @data.in_stock - @data.out_stock
+      @data.total_stock = @data.total_stock + @data.in_stock
+      @data.total_price_stock = @data.price_stock * @data.total_stock
+      @data.date_in = Time.now
+      @data.date_out = Time.now
 
       if @data.save
         json_response({ data: @data }, "Stock berhasil diubah", 200)
