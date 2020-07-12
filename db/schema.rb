@@ -20,13 +20,11 @@ ActiveRecord::Schema.define(version: 2020_07_03_090054) do
     t.integer "status_absent"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_datas_id"
     t.integer "active"
     t.bigint "employee_id"
     t.datetime "entry_hour"
     t.datetime "out_hour"
     t.index ["employee_id"], name: "index_absents_on_employee_id"
-    t.index ["user_datas_id"], name: "index_absents_on_user_datas_id"
   end
 
   create_table "employees", force: :cascade do |t|
@@ -69,10 +67,8 @@ ActiveRecord::Schema.define(version: 2020_07_03_090054) do
     t.datetime "cash_receipt_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_datas_id"
     t.bigint "employee_id"
     t.index ["employee_id"], name: "index_sallaries_on_employee_id"
-    t.index ["user_datas_id"], name: "index_sallaries_on_user_datas_id"
   end
 
   create_table "stocks", force: :cascade do |t|
@@ -88,22 +84,6 @@ ActiveRecord::Schema.define(version: 2020_07_03_090054) do
     t.integer "total_price_stock", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_datas_id"
-    t.index ["user_datas_id"], name: "index_stocks_on_user_datas_id"
-  end
-
-  create_table "user_datas", force: :cascade do |t|
-    t.string "username"
-    t.string "email"
-    t.datetime "birthdate"
-    t.integer "phone_number"
-    t.string "position"
-    t.string "status"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_id"
-    t.string "full_name"
-    t.index ["user_id"], name: "index_user_datas_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -118,8 +98,4 @@ ActiveRecord::Schema.define(version: 2020_07_03_090054) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "absents", "user_datas", column: "user_datas_id"
-  add_foreign_key "sallaries", "user_datas", column: "user_datas_id"
-  add_foreign_key "stocks", "user_datas", column: "user_datas_id"
-  add_foreign_key "user_datas", "users"
 end
