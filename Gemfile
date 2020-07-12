@@ -29,6 +29,7 @@ gem 'caxlsx_rails'
 gem 'jbuilder', '~> 2.7'
 gem 'fast_jsonapi'
 gem 'jb'
+gem 'rack-cors'
 
 gem 'jwt'
 

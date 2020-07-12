@@ -4,7 +4,10 @@ module Api::V1
 
     def index
 
-      @data = Employee.all.page(params[:page]).per(params[:per])
+      @data = Employee.all
+      @data = @data.filter_jabatan(params[:jabatan]) unless params[:jabatan].blank?
+      @data = @data.filter_status(params[:status_employee]) unless params[:status_employee].blank?
+      @data = @data.page(params[:page]).per(params[:per])
       @pagination = {
         current_page: @data.current_page,
         next_page: @data.next_page,

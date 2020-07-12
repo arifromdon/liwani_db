@@ -30,4 +30,26 @@ class Employee < ApplicationRecord
     )
   end
 
+  def self.filter_jabatan(jabatan)
+    if jabatan.eql?('admin')
+      return self.where(position: jabatan)
+    elsif jabatan.eql?('karyawan')
+      return self.where(position: jabatan)
+    elsif jabatan.eql?('petani')
+      return self.where(position: jabatan)
+    elsif jabatan.eql?('kepala_kebun')
+      return self.where(position: jabatan)
+    end
+  end
+
+  def self.filter_status(status_employee)
+    if status_employee.eql?('tetap')
+      return self.where(status: status_employee)
+    elsif status_employee.eql?('kontrak')
+      return self.where(status: status_employee)
+    elsif status_employee.eql?('harian')
+      return self.where(status: status_employee)
+    end
+  end
+
 end
