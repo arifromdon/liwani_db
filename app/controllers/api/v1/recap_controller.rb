@@ -40,7 +40,9 @@ module Api::V1
 
       if @data
         json_response({ data: @data }, "Rekap data gaji berhasil ditampilkan", 200)
-      else
+      elsif @data.blank?
+        json_response({}, "Rekap data gaji kosong", 200)
+      elsif
         json_response({}, "Rekap data gaji gagal ditampilkan", 400)
       end
 
@@ -53,9 +55,11 @@ module Api::V1
       listStock = Stock.all.where(created_at: date_range)
 
       if listStock
-        json_response({ data: listStock }, "Rekap data gaji berhasil ditampilkan", 200)
-      else
-        json_response({}, "Rekap data gaji gagal ditampilkan", 400)
+        json_response({ data: listStock }, "Rekap data stok berhasil ditampilkan", 200)
+      elsif listStock.blank?
+        json_response({ data: listStock }, "Rekap data stok kosong", 200)
+      elsif
+        json_response({}, "Rekap data stok gagal ditampilkan", 400)
       end
 
     end

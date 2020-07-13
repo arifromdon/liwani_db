@@ -52,4 +52,16 @@ class Employee < ApplicationRecord
     end
   end
 
+  def get_sallary_monthly
+    work_minute = self.total_work_hour / 60
+    sallary_per_day = self.sallary.salary_per_day
+
+    sallary_per_minute = sallary_per_day / (9 * 60)
+
+    total = sallary_per_minute * work_minute
+
+    return total
+
+  end
+
 end

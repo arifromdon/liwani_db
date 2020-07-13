@@ -23,13 +23,13 @@ module Api::V1
 
     def create
 
-      data_employee = Employee.find_by(email: params[:email])
+      data_employee = Employee.find_by(phone_number: params[:phone_number])
 
       if data_employee.nil?
         json_response({}, "Data karyawan tidak ada", 400)
       else
         @data = Absent.create_absent(data_employee)
-        Rails.logger.info "#{@data}"
+
         if @data[0] == true
           json_response({ data: @data }, @data[1], 200)
         else
@@ -50,9 +50,21 @@ module Api::V1
       if params[:status_absent] == 'masuk'
         @data.entry_hour = Time.now
       else
+        now = DateTime.now
+        datetime = DateTime.parse(now.strftime("%Y-%m-%dT17:00:00%z")).to_datetime
+        zone = ActiveSupport::TimeZone.new("Asia/Jakarta")
+        entry_hour = @data.entry_hour.in_time_zone(zone)
+        work_hour = (datetime.to_i - entry_hour.to_datetime.to_i)
+        Rails.logger.info "======== #{datetime}"
+        Rails.logger.info "======== #{entry_hour.to_datetime}"
+        Rails.logger.info "======== #{datetime.to_i}"
+        Rails.logger.info "======== #{entry_hour.to_datetime.to_i}"
+        Rails.logger.info "======== #{work_hour}"
+
         @data.out_hour = Time.now
         @data.employee.total_absent += 1
         @data.employee.total_absent_monthly += 1
+        @data.employee.total_work_hour += work_hour
       end
 
       @data.status_absent = params[:status_absent]

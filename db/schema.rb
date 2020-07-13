@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_13_091135) do
+ActiveRecord::Schema.define(version: 2020_07_13_103319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 2020_07_13_091135) do
     t.datetime "join"
     t.integer "total_absent_monthly", default: 0
     t.integer "total_absent", default: 0
+    t.integer "total_work_hour", default: 0
   end
 
   create_table "rekaps", force: :cascade do |t|
