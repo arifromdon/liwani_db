@@ -10,7 +10,7 @@ module Api::V1
       else
         @data = data_employee.page(params[:page]).per(params[:per])
 
-        # json_response({ data: @data })
+        render 'api/v1/salary/index.json.jbuilder'
       end
     end
 
