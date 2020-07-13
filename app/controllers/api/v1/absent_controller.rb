@@ -6,6 +6,8 @@ module Api::V1
 
       @data = Absent.all.page(params[:page]).per(params[:per])
 
+      render 'api/v1/absent/index.json.jbuilder'
+
     end
 
     def show
