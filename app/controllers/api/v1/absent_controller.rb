@@ -4,10 +4,10 @@ module Api::V1
 
     def index
 
-      @data = Absent.all.page(params[:page]).per(params[:per])
+      @data = Absent.where(created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
+      @data = @data.page(params[:page]).per(params[:per])
 
       render 'api/v1/absent/index.json.jbuilder'
-
 
     end
 
