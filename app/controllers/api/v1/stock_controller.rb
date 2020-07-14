@@ -16,6 +16,16 @@ module Api::V1
 
     end
 
+    def show
+      @data = Stock.find_by( id: params[:id] )
+
+      if @data.present?
+        json_response({ data: @data}, "Data stock berhasil ditampilkan", 200)
+      else
+        json_response({}, "Data stock gagal ditampilkan", 404)
+      end
+    end
+
 		def create
 
       @data = Stock.new

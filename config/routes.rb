@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
       resource :stock, only:[] do
         get "/", to: "stock#index"
-        get "/:id", to: "stock#show"
+        get "/show/:id", to: "stock#show"
 
         post "/create", to: "stock#create"
         post "/update/:id", to: "stock#update"
