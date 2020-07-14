@@ -44,6 +44,7 @@ Rails.application.routes.draw do
 
       resource :salary, only:[] do
         get "/", to: "salary#index"
+        get "/show/:id", to: "salary#show"
 
         post "/update/:id", to: "salary#update_salary"
         post "/update/cash_receipt/:id", to: "salary#update_cash_receipt"

@@ -14,6 +14,17 @@ module Api::V1
       end
     end
 
+    def show
+      data_employee = Employee.find_by( id: params[:id])
+
+      if data_employee.nil?
+        # json_response({}, "Data karyawan tidak ada", 400)
+      else
+        @data = data_employee
+        render 'api/v1/salary/detail.json.jbuilder'
+      end
+    end
+
     def update_salary
 
       @data = Sallary.find_by(employee_id: params[:id])
