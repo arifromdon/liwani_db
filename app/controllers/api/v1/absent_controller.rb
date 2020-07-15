@@ -55,11 +55,6 @@ module Api::V1
         zone = ActiveSupport::TimeZone.new("Asia/Jakarta")
         entry_hour = @data.entry_hour.in_time_zone(zone)
         work_hour = (datetime.to_i - entry_hour.to_datetime.to_i)
-        Rails.logger.info "======== #{datetime}"
-        Rails.logger.info "======== #{entry_hour.to_datetime}"
-        Rails.logger.info "======== #{datetime.to_i}"
-        Rails.logger.info "======== #{entry_hour.to_datetime.to_i}"
-        Rails.logger.info "======== #{work_hour}"
 
         @data.out_hour = Time.now
         @data.employee.total_absent += 1
@@ -71,6 +66,8 @@ module Api::V1
 
       if @data.save
         @data.employee.save
+
+        @data.create_history
 
         json_response({ data: @data }, "Data absent berhasil diubah", 200)
       else

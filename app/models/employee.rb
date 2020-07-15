@@ -4,6 +4,7 @@ class Employee < ApplicationRecord
   enum status: [:tetap, :kontrak, :harian]
   has_many :absents
   has_one :sallary
+  has_many :salary_histories
 
   def self.create_employee(params)
 

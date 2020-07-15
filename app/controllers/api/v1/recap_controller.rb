@@ -64,43 +64,22 @@ module Api::V1
 
     end
 
-    # def export_salary
-    #   employees = Employee.all
+    def recap
 
-    #   @data = []
+      tanggal = params[:month].to_datetime
 
-    #   date_now = Date.parse('JULY 2020')
-    #   date_range = date_now.beginning_of_month..date_now.end_of_month
+      @histories = SalaryHistory.where(created_at: tanggal.beginning_of_month..tanggal.end_of_month)
+      @data = Employee.where(id: @histories.pluck(:employee_id))
 
-    #   employees.each do |employee|
-    #     absent = employee.absents.where(created_at: date_range)
-    #     data = {
-    #       employee: employee,
-    #       salary_recap: {
-    #         total_attendance: absent.count,
-    #         salary_per_day: employee.sallary.salary_per_day,
-    #         salary: (employee.sallary.salary_per_day * absent.count) 
-    #       }
-    #     }
-    #     @data << data
-    #   end
+      render "api/v1/recap/index.json.jbuilder"
 
-    #   respond_to do |format|
-    #     format.xlsx {
-    #       response.headers[
-    #         'Content-Disposition'
-    #       ] = "attachment; filename='items.xlsx'"
-    #     }
-    #     json_response({ data: index })
-    #   end
+    end
 
-    # end
+    def recap_per_employee
+      
+      @data = SalaryHistory.where(employee_id: params[:employee], create_at: Datetime.today).first 
 
-    # def export_stock
-    # end
-
-    # def export_all
-    # end
+    end
 
   end
 
