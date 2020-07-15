@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_13_103319) do
+ActiveRecord::Schema.define(version: 2020_07_14_154246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,17 @@ ActiveRecord::Schema.define(version: 2020_07_13_103319) do
     t.index ["employee_id"], name: "index_absents_on_employee_id"
   end
 
+  create_table "deductions", force: :cascade do |t|
+    t.bigint "employees_id"
+    t.float "total_deduction"
+    t.float "remaining_deduction"
+    t.integer "deduction_length"
+    t.integer "status", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["employees_id"], name: "index_deductions_on_employees_id"
+  end
+
   create_table "employees", force: :cascade do |t|
     t.string "employee_name"
     t.string "email"
@@ -39,6 +50,7 @@ ActiveRecord::Schema.define(version: 2020_07_13_103319) do
     t.integer "total_absent_monthly", default: 0
     t.integer "total_absent", default: 0
     t.integer "total_work_hour", default: 0
+    t.datetime "current_active_month", default: "2020-07-14 21:53:00"
   end
 
   create_table "rekaps", force: :cascade do |t|
@@ -51,6 +63,19 @@ ActiveRecord::Schema.define(version: 2020_07_13_103319) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["sallaries_id"], name: "index_rekaps_on_sallaries_id"
     t.index ["stocks_id"], name: "index_rekaps_on_stocks_id"
+  end
+
+  create_table "salary_histories", force: :cascade do |t|
+    t.integer "salary_per_day", default: 0
+    t.integer "monthly_deduction", default: 0
+    t.integer "total_deduction", default: 0
+    t.integer "remaining_deduction", default: 0
+    t.integer "work_hours", default: 0
+    t.integer "total_salary", default: 0
+    t.bigint "employee_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["employee_id"], name: "index_salary_histories_on_employee_id"
   end
 
   create_table "sallaries", force: :cascade do |t|

@@ -16,18 +16,25 @@ class Employee < ApplicationRecord
       join: params[:join]
     )
 
-    create_sallary(params, data.id)
+    if data
+      
+      Sallary.create(
+        monthly_deduction: params[:monthly_deduction],
+        total_deduction: params[:total_deduction],
+        salary_per_day: params[:salary_per_day],
+        remaining_deduction: params[:remaining_deduction],
+        total_salary: params[:total_salary],
+        employee_id: data.id
+      )
+      
+      return data
+    end
+
   end
 
   def self.create_sallary(params, id)
-    Sallary.create(
-      monthly_deduction: params[:monthly_deduction],
-      total_deduction: params[:total_deduction],
-      salary_per_day: params[:salary_per_day],
-      remaining_deduction: params[:remaining_deduction],
-      total_salary: params[:total_salary],
-      employee_id: id
-    )
+    
+
   end
 
   def self.filter_jabatan(jabatan)

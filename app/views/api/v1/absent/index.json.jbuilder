@@ -1,10 +1,10 @@
 json.data @data.each do |data|
   json.id data.id
-  json.employee_name data.employee.employee_name
-  json.email data.employee.email
-  json.phone_number data.employee.phone_number
-  json.position data.employee.position
-  json.status data.employee.status
+  json.employee_name data.employee.present? ? data.employee.employee_name : ''
+  json.email data.employee.present? ? data.employee.email : ''
+  json.phone_number data.employee.present? ? data.employee.phone_number : 0
+  json.position data.employee.present? ? data.employee.position : ''
+  json.status data.employee.present? ? data.employee.status : ''
   json.entry_hour data.entry_hour
   json.out_hour data.out_hour
   json.active data.active

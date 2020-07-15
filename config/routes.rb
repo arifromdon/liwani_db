@@ -57,6 +57,10 @@ Rails.application.routes.draw do
         post "/show_sallary", to: "recap#show_sallary"
         post "/show_stock", to: "recap#show_stock"
       end
+
+      resource :setting, only:[] do
+        get "/check_active_month", to: "setting#check_active_month"
+      end
    	end
   end
 end

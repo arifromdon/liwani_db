@@ -27,7 +27,7 @@ module Api::V1
 
     def update_salary
 
-      @data = Sallary.find_by(employee_id: params[:id])
+      @data = Sallary.find_by(id: params[:id].to_i)
 
       if @data.nil?
         json_response({ data: {} }, "Stock tidak ditemukan", 404)
