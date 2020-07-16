@@ -11,6 +11,11 @@ Rails.application.routes.draw do
     namespace :v1 do
     	post 'auth/token/request', to: 'authentications#request_token'
       post 'auth/forgot', to: 'authentications#forgot'
+
+      post 'user/request_forgot', to: 'user#reset_password_request'
+      post 'user/reset_password', to: 'user#reset_password'
+      
+      get 'user/check_token/:token', to: 'user#check_token_password'
       
       get 'stock', to: 'stock#index'
 
