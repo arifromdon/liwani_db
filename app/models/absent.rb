@@ -75,7 +75,6 @@ class Absent < ApplicationRecord
       create.remaining_deduction =  self.employee.sallary.present? ? self.employee.sallary.remaining_deduction : 0
       create.employee_id = self.employee.id
 
-      Rails.logger.info "======================#{create.inspect}============"
       create.save!
     end
   end
