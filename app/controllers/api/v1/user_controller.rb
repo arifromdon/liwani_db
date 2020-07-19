@@ -82,13 +82,13 @@ module Api::V1
         @data.password = params[:password]
         @data.password_confirmation = params[:password_confirmation]
 
-        if params[:password_confirmation] === params[:password]
+        if params[:password] === params[:password_confirmation]
           @data.password_toke_reset = ""
           @data.save
 
           json_response({}, "Password berhasil dirubah", 200)
         else
-          json_response({}, "Password tidak sama dengan konfirmasi password, coba cek kembali", 200)
+          json_response({}, "Password tidak sama dengan konfirmasi password, coba cek kembali", 400)
         end
       end
       

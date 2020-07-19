@@ -58,6 +58,7 @@ Rails.application.routes.draw do
       resource :recap, only:[] do
         get "/", to: "recap#index"
         get "/export_salary", to: "recap#export_salary"
+        get "/recap_per_employee/:id", to: "recap#recap_per_employee"
         post "/recap", to: "recap#recap"
 
         post "/show_sallary", to: "recap#show_sallary"

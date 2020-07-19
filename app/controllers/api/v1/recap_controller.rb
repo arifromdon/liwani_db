@@ -77,8 +77,10 @@ module Api::V1
 
     def recap_per_employee
       
-      @data = SalaryHistory.where(employee_id: params[:employee], create_at: Datetime.today).first 
+      @histories = SalaryHistory.where(employee_id: params[:id]).first 
+      @data = Employee.where(id: @histories.employee_id)
 
+      render "api/v1/recap/recap_per_employee.json.jbuilder"
     end
 
   end
