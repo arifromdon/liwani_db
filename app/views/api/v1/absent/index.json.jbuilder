@@ -1,5 +1,6 @@
 json.data @data.each do |data|
   json.id data.id
+  json.employee_id data.employee_id
   json.employee_name data.employee.employee_name
   json.email data.employee.email
   json.phone_number data.employee.phone_number
