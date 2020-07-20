@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
       post 'user/request_forgot', to: 'user#reset_password_request'
       post 'user/reset_password', to: 'user#reset_password'
+      post 'user/create', to: 'user#create'
       
       get 'user/check_token/:token', to: 'user#check_token_password'
       

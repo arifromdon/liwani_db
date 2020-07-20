@@ -17,6 +17,7 @@ module Api::V1
       @data = User.new
       @data.email = params[:email]
       @data.password = params[:password]
+      @data.status = params[:status]
 
       if @data.save
         json_response({ data: @data }, "User berhasil ditambahkan", 200)
