@@ -41,7 +41,7 @@ module Api::V1
 
     def update
 
-      @data = Absent.find_by( employee_id: params[:id] )
+      @data = Absent.find_by( id: params[:id] )
 
       if @data.nil?
         json_response({ data: {} }, "Data absent tidak ditemukan", 404)
@@ -66,9 +66,10 @@ module Api::V1
         @data.status_absent = params[:status_absent]
 
         if @data.save
-          @data.employee.save
-
-          @data.create_history
+          if params[:status_absent] == 'keluar'
+            @data.employee.save
+            @data.create_history
+          end
 
           json_response({ data: @data }, "Data absent berhasil diubah", 200)
         else
