@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_20_152324) do
+ActiveRecord::Schema.define(version: 2020_07_27_135954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,13 @@ ActiveRecord::Schema.define(version: 2020_07_20_152324) do
     t.datetime "entry_hour"
     t.datetime "out_hour"
     t.index ["employee_id"], name: "index_absents_on_employee_id"
+  end
+
+  create_table "add_allowances", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "employee_id"
+    t.index ["employee_id"], name: "index_add_allowances_on_employee_id"
   end
 
   create_table "deductions", force: :cascade do |t|
@@ -94,6 +101,9 @@ ActiveRecord::Schema.define(version: 2020_07_20_152324) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "employee_id"
+    t.integer "meal_allowance", default: 0
+    t.integer "transport_allowance", default: 0
+    t.integer "positional_allowance", default: 0
     t.index ["employee_id"], name: "index_sallaries_on_employee_id"
   end
 

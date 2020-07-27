@@ -3,8 +3,10 @@ module Api::V1
 	class StockController < Api::ApplicationController
 
 		def index
-
       @data = Stock.all.page(params[:page]).per(params[:per])
+      @data = @data.filter_stock_name(params[:stock_name]) unless params[:stock_name].blank?
+      @data = @data.filter_actor(params[:actor]) unless params[:actor].blank?
+      @data = @data.page(params[:page]).per(params[:per])
       @pagination = {
         current_page: @data.current_page,
         next_page: @data.next_page,

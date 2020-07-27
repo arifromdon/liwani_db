@@ -23,8 +23,8 @@ module Api::V1
 
     def create
 
-      data_employee = Employee.find_by(phone_number: params[:phone_number])
-
+      data_employee = Employee
+      Rails.logger.info "#{Employee}"
       if data_employee.nil?
         json_response({}, "Data karyawan tidak ada", 400)
       else

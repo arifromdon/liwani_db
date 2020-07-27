@@ -1,7 +1,7 @@
 class Absent < ApplicationRecord
 
   scope :active, ->{where(active:1)}
-  enum status_absent: [:masuk, :alpa, :izin, :cuti, :belum_absen, :keluar]
+  enum status_absent: [:masuk, :alpa, :izin, :cuti, :belum_absen, :keluar, :sakit]
   belongs_to :employee
 
   def self.create_absent(employee)
@@ -59,9 +59,6 @@ class Absent < ApplicationRecord
       zone = ActiveSupport::TimeZone.new("Asia/Jakarta")
       entry_hour = self.entry_hour.in_time_zone(zone)
       work_hour = (datetime.to_i - entry_hour.to_datetime.to_i) / 60
-
-      Rails.logger.info "=========== eh : #{entry_hour}"
-      Rails.logger.info "=========== wh : #{work_hour}"
 
       sallary_per_minute = self.employee.sallary.present? ? self.employee.sallary.salary_per_day.to_f / (9 * 60).to_f : 0
       total = sallary_per_minute * work_hour

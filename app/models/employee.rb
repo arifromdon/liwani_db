@@ -27,6 +27,9 @@ class Employee < ApplicationRecord
       salary_per_day: params[:salary_per_day],
       remaining_deduction: params[:remaining_deduction],
       total_salary: params[:total_salary],
+      meal_allowance: params[:meal_allowance],
+      transport_allowance: params[:transport_allowance],
+      positional_allowance: params[:positional_allowance],
       employee_id: id
     )
   end

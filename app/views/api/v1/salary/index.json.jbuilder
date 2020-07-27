@@ -8,6 +8,10 @@ json.data @data.each do |data|
   json.total_deduction data.sallary.present? ? data.sallary.total_deduction : 0
   json.salary_per_day data.sallary.present? ? data.sallary.salary_per_day : 0
   json.remaining_deduction data.sallary.present? ? data.sallary.remaining_deduction : 0
+  json.meal_allowance data.sallary.present? ? data.sallary.meal_allowance : 0
+  json.transport_allowance data.sallary.present? ? data.sallary.transport_allowance : 0
+  json.positional_allowance data.sallary.present? ? data.sallary.positional_allowance : 0
+  json.total_salary data.sallary.present? ? data.sallary.total_salary : 0
 end
 
 json.meta do 
