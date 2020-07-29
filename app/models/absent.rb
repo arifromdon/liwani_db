@@ -24,7 +24,7 @@ class Absent < ApplicationRecord
     )
 
     if create 
-      return true, "Absent berhasil dibuat"
+      return true, "Absent berhasil dibuat", create
     end
 
   end

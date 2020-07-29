@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_28_164116) do
+ActiveRecord::Schema.define(version: 2020_07_29_155327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 2020_07_28_164116) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "employee_id"
     t.boolean "status"
-    t.integer "type", default: 0
+    t.integer "deduce_type", default: 0
     t.index ["employee_id"], name: "index_cash_receipts_on_employee_id"
   end
 
@@ -160,4 +160,8 @@ ActiveRecord::Schema.define(version: 2020_07_28_164116) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "absents", "employees", on_delete: :cascade
+  add_foreign_key "cash_receipts", "employees", on_delete: :cascade
+  add_foreign_key "employees", "positions", on_delete: :cascade
+  add_foreign_key "salary_histories", "employees", on_delete: :cascade
 end

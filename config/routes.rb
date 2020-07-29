@@ -22,6 +22,9 @@ Rails.application.routes.draw do
 
       resource :deductions, only:[] do
         get "/", to: "deduction#index"
+        get "/:id", to: "deduction#show"
+        get "/by_employee/:id", to: "deduction#by_employee"
+        get "/detail_by_employee/:id", to: "deduction#detail_by_employee"
 
         post "/create", to: "deduction#create"
         post "/update/:id", to: "deduction#update"
@@ -30,7 +33,6 @@ Rails.application.routes.draw do
       resource :positions, only:[] do
         get "/", to: "position#index"
         get "/:id", to: "position#show"
-
         post "/create", to: "position#create"
         post "/update/:id", to: "position#update"
       end

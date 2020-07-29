@@ -5,6 +5,7 @@ class Employee < ApplicationRecord
   has_many :absents
   has_one :sallary
   has_many :salary_histories
+  has_many :cash_receipts
   belongs_to :position, optional:true
 
   def self.create_employee(params)
@@ -21,6 +22,8 @@ class Employee < ApplicationRecord
     )
 
     create_sallary(params, data.id)
+
+    return data
   end
 
   def self.create_sallary(params, id)
