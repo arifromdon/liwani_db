@@ -4,7 +4,10 @@ module Api::V1
 
     def index
 
-      @data = Absent.all.page(params[:page]).per(params[:per])
+      @data = Absent.joins(:employee).where("absents.created_at between ? and ?", Time.zone.now.beginning_of_day, Time.zone.now.end_of_day).where("employees.id is not null")
+      @data = @data.page(params[:page]).per(params[:per])
+
+      render 'api/v1/absent/index.json.jbuilder'
 
       render 'api/v1/absent/index.json.jbuilder'
 
@@ -22,13 +25,13 @@ module Api::V1
 
     def create
 
-      data_employee = Employee.find_by(email: params[:email])
+      data_employee = Employee.find_by(phone_number: params[:phone_number])
 
       if data_employee.nil?
         json_response({}, "Data karyawan tidak ada", 400)
       else
         @data = Absent.create_absent(data_employee)
-        Rails.logger.info "#{@data}"
+
         if @data[0] == true
           json_response({ data: @data }, @data[1], 200)
         else
@@ -44,24 +47,36 @@ module Api::V1
 
       if @data.nil?
         json_response({ data: {} }, "Data absent tidak ditemukan", 404)
-      end
-
-      if params[:status_absent] == 'masuk'
-        @data.entry_hour = Time.now
       else
-        @data.out_hour = Time.now
-        @data.employee.total_absent += 1
-        @data.employee.total_absent_monthly += 1
-      end
+        if params[:status_absent] == 'masuk'
+          @data.entry_hour = Time.now
+        elsif params[:status_absent] == 'keluar'
+          now = DateTime.now
+          datetime = DateTime.parse(now.strftime("%Y-%m-%dT17:00:00%z")).to_datetime
+          zone = ActiveSupport::TimeZone.new("Asia/Jakarta")
+          entry_hour = @data.entry_hour.in_time_zone(zone)
+          work_hour = (datetime.to_i - entry_hour.to_datetime.to_i)
 
-      @data.status_absent = params[:status_absent]
+          @data.out_hour = Time.now
+          @data.employee.total_absent += 1
+          @data.employee.total_absent_monthly += 1
+          @data.employee.total_work_hour += work_hour
+        elsif params[:status_absent] == 'alpa'
+          @data.status_absent = params[:status_absent]
+        end
 
-      if @data.save
-        @data.employee.save
+        @data.status_absent = params[:status_absent]
 
-        json_response({ data: @data }, "Data absent berhasil diubah", 200)
-      else
-        json_response({}, "Data absent gagal diubah", 400)
+        if @data.save
+          if params[:status_absent] == 'keluar'
+            @data.employee.save
+            @data.create_history
+          end
+
+          json_response({ data: @data }, "Data absent berhasil diubah", 200)
+        else
+          json_response({}, "Data absent gagal diubah", 400)
+        end
       end
 
     end

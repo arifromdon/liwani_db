@@ -4,6 +4,7 @@ class Employee < ApplicationRecord
   enum status: [:tetap, :kontrak, :harian]
   has_many :absents
   has_one :sallary
+  has_many :salary_histories
 
   def self.create_employee(params)
 
@@ -50,6 +51,18 @@ class Employee < ApplicationRecord
     elsif status_employee.eql?('harian')
       return self.where(status: status_employee)
     end
+  end
+
+  def get_sallary_monthly
+    work_minute = self.total_work_hour / 60
+    sallary_per_day = self.sallary.salary_per_day
+
+    sallary_per_minute = sallary_per_day / (9 * 60)
+
+    total = sallary_per_minute * work_minute
+
+    return total
+
   end
 
 end

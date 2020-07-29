@@ -47,4 +47,36 @@ class Absent < ApplicationRecord
     return datas
   end
 
+  def create_history
+
+    check = SalaryHistory.find_by(employee_id: self.employee.id, created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
+
+    if check.present?
+      return false
+    else
+      now = DateTime.now
+      datetime = DateTime.parse(now.strftime("%Y-%m-%dT17:00:00%z")).to_datetime
+      zone = ActiveSupport::TimeZone.new("Asia/Jakarta")
+      entry_hour = self.entry_hour.in_time_zone(zone)
+      work_hour = (datetime.to_i - entry_hour.to_datetime.to_i) / 60
+
+      Rails.logger.info "=========== eh : #{entry_hour}"
+      Rails.logger.info "=========== wh : #{work_hour}"
+
+      sallary_per_minute = self.employee.sallary.present? ? self.employee.sallary.salary_per_day.to_f / (9 * 60).to_f : 0
+      total = sallary_per_minute * work_hour
+
+      create = SalaryHistory.new
+      create.salary_per_day = self.employee.sallary.present? ? self.employee.sallary.salary_per_day : 0
+      create.total_salary = total
+      create.monthly_deduction = self.employee.sallary.present? ? self.employee.sallary.monthly_deduction : 0
+      create.total_deduction = self.employee.sallary.present? ? self.employee.sallary.total_deduction : 0
+      create.work_hours =  self.employee.total_work_hour
+      create.remaining_deduction =  self.employee.sallary.present? ? self.employee.sallary.remaining_deduction : 0
+      create.employee_id = self.employee.id
+
+      create.save!
+    end
+  end
+
 end

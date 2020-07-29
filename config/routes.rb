@@ -11,6 +11,12 @@ Rails.application.routes.draw do
     namespace :v1 do
     	post 'auth/token/request', to: 'authentications#request_token'
       post 'auth/forgot', to: 'authentications#forgot'
+
+      post 'user/request_forgot', to: 'user#reset_password_request'
+      post 'user/reset_password', to: 'user#reset_password'
+      post 'user/create', to: 'user#create'
+      
+      get 'user/check_token/:token', to: 'user#check_token_password'
       
       get 'stock', to: 'stock#index'
 
@@ -26,7 +32,7 @@ Rails.application.routes.draw do
 
       resource :stock, only:[] do
         get "/", to: "stock#index"
-        get "/:id", to: "stock#show"
+        get "/show/:id", to: "stock#show"
 
         post "/create", to: "stock#create"
         post "/update/:id", to: "stock#update"
@@ -44,6 +50,7 @@ Rails.application.routes.draw do
 
       resource :salary, only:[] do
         get "/", to: "salary#index"
+        get "/show/:id", to: "salary#show"
 
         post "/update/:id", to: "salary#update_salary"
         post "/update/cash_receipt/:id", to: "salary#update_cash_receipt"
@@ -52,6 +59,8 @@ Rails.application.routes.draw do
       resource :recap, only:[] do
         get "/", to: "recap#index"
         get "/export_salary", to: "recap#export_salary"
+        get "/recap_per_employee/:id", to: "recap#recap_per_employee"
+        post "/recap", to: "recap#recap"
 
         post "/show_sallary", to: "recap#show_sallary"
         post "/show_stock", to: "recap#show_stock"

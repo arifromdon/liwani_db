@@ -10,7 +10,18 @@ module Api::V1
       else
         @data = data_employee.page(params[:page]).per(params[:per])
 
-        # json_response({ data: @data })
+        render 'api/v1/salary/index.json.jbuilder'
+      end
+    end
+
+    def show
+      data_employee = Employee.find_by( id: params[:id])
+
+      if data_employee.nil?
+        # json_response({}, "Data karyawan tidak ada", 400)
+      else
+        @data = data_employee
+        render 'api/v1/salary/detail.json.jbuilder'
       end
     end
 

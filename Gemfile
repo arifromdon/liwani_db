@@ -30,6 +30,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'fast_jsonapi'
 gem 'jb'
 gem 'rack-cors'
+gem 'dotenv-rails'
 
 gem 'jwt'
 

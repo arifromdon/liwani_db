@@ -16,6 +16,16 @@ module Api::V1
 
     end
 
+    def show
+      @data = Stock.find_by( id: params[:id] )
+
+      if @data.present?
+        json_response({ data: @data}, "Data stock berhasil ditampilkan", 200)
+      else
+        json_response({}, "Data stock gagal ditampilkan", 404)
+      end
+    end
+
 		def create
 
       @data = Stock.new
@@ -44,6 +54,7 @@ module Api::V1
 
       @data.in_stock = params[:in_stock]
       @data.out_stock = params[:out_stock]
+      @data.actor = params[:actor]
       @data.current_stock = @data.current_stock + @data.in_stock - @data.out_stock
       @data.total_stock = @data.total_stock + @data.in_stock
       @data.total_price_stock = @data.price_stock * @data.total_stock
