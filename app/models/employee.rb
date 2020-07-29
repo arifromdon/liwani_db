@@ -1,20 +1,23 @@
 class Employee < ApplicationRecord
 
-  enum position: [:admin, :general_manager, :manager, :kepala_kebun, :pengawas, :karyawan, :petani]
+  # enum position: [:admin, :manager, :kepala_kebun, :pengawas, :karyawan, :petani]
   enum status: [:tetap, :kontrak, :harian]
   has_many :absents
   has_one :sallary
   has_many :salary_histories
+  belongs_to :position, optional:true
 
   def self.create_employee(params)
+
+    position = Position.find_by(id: params[:position_id])
 
     data = Employee.create(
       employee_name: params[:employee_name],
       email: params[:email],
       phone_number: params[:phone_number],
-      position: params[:position],
       status: params[:status],
-      join: params[:join]
+      join: params[:join],
+      position_id: position.id
     )
 
     create_sallary(params, data.id)

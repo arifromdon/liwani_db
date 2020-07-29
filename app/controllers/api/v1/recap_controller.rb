@@ -19,6 +19,7 @@ module Api::V1
 
     def show_sallary
       employees = Employee.all
+      histories = SalaryHistory.all
 
       @data = []
 
@@ -26,14 +27,16 @@ module Api::V1
       date_range = date_now.beginning_of_month..date_now.end_of_month
 
       employees.each do |employee|
-        absent = employee.absents.where(created_at: date_range)
+        absent = employee.salary_histories.where(employee_id: employee.id)
+        salaries = absent.pluck(:total_salary)  
+        total_all = salaries.inject(0){|sum,x| sum + x }
         data = {
           employee: employee,
-          salary_recap: {
-            total_attendance: absent.count,
-            salary_per_day: employee.sallary.salary_per_day,
-            salary: (employee.sallary.salary_per_day * absent.count) 
-          }
+          salary_recap: total_all
+          # salary_recap: {
+          #   # salary_per_day: absent.salary_per_day,
+          #   salary: absent.total_salary.count
+          # }
         }
         @data << data
       end

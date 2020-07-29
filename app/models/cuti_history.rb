@@ -1,0 +1,2 @@
+class CutiHistory < ApplicationRecord
+end

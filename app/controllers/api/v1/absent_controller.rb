@@ -43,8 +43,8 @@ module Api::V1
 
     def update
 
-      @data = Absent.find_by( id: params[:id] )
-
+      @data = Absent.find_by( employee_id: params[:id] )
+      Rails.logger.info "=================#{@data}"
       if @data.nil?
         json_response({ data: {} }, "Data absent tidak ditemukan", 404)
       else
@@ -70,7 +70,7 @@ module Api::V1
         if @data.save
           if params[:status_absent] == 'keluar'
             @data.employee.save
-            @data.create_history
+            @data.create_history(params[:status_absent])
           end
 
           json_response({ data: @data }, "Data absent berhasil diubah", 200)
