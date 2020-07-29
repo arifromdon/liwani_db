@@ -20,6 +20,21 @@ Rails.application.routes.draw do
       
       get 'stock', to: 'stock#index'
 
+      resource :deductions, only:[] do
+        get "/", to: "deduction#index"
+
+        post "/create", to: "deduction#create"
+        post "/update/:id", to: "deduction#update"
+      end
+
+      resource :positions, only:[] do
+        get "/", to: "position#index"
+        get "/:id", to: "position#show"
+
+        post "/create", to: "position#create"
+        post "/update/:id", to: "position#update"
+      end
+
       resource :employees, only:[] do
         get "/", to: "employee#index"
         get "/:id", to: "employee#show"

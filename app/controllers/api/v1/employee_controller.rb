@@ -15,8 +15,8 @@ module Api::V1
         total_page: @data.total_pages
       }
 
-      json_response({ data: @data, pagination: @pagination }, "Berhasil", 200)
-
+      # json_response({ data: @data, pagination: @pagination }, "Berhasil", 200)
+      render 'api/v1/employee/index.json.jbuilder'
     end
 
     def show

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_20_152324) do
+ActiveRecord::Schema.define(version: 2020_07_28_164116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,22 +27,43 @@ ActiveRecord::Schema.define(version: 2020_07_20_152324) do
     t.index ["employee_id"], name: "index_absents_on_employee_id"
   end
 
-  create_table "deductions", force: :cascade do |t|
-    t.bigint "employees_id"
-    t.float "total_deduction"
-    t.float "remaining_deduction"
-    t.integer "deduction_length"
-    t.integer "status", default: 0
+  create_table "banks", force: :cascade do |t|
+    t.integer "bank_account_number", default: 0
+    t.string "bank_name"
+    t.string "owner"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["employees_id"], name: "index_deductions_on_employees_id"
+  end
+
+  create_table "cash_receipts", force: :cascade do |t|
+    t.integer "total_cash_receipt", default: 0
+    t.integer "monthly_deduction", default: 0
+    t.integer "cash_receipt_term", default: 0
+    t.integer "rest_receipt_term", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "employee_id"
+    t.boolean "status"
+    t.integer "type", default: 0
+    t.index ["employee_id"], name: "index_cash_receipts_on_employee_id"
+  end
+
+  create_table "cuti_histories", force: :cascade do |t|
+    t.bigint "employee_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string "status"
+    t.integer "sisa", default: 0
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["employee_id"], name: "index_cuti_histories_on_employee_id"
   end
 
   create_table "employees", force: :cascade do |t|
     t.string "employee_name"
     t.string "email"
     t.string "phone_number"
-    t.integer "position"
     t.integer "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -50,7 +71,19 @@ ActiveRecord::Schema.define(version: 2020_07_20_152324) do
     t.integer "total_absent_monthly", default: 0
     t.integer "total_absent", default: 0
     t.integer "total_work_hour", default: 0
-    t.datetime "current_active_month", default: "2020-07-14 21:53:00"
+    t.integer "leave_rasio", default: 0
+    t.bigint "position_id"
+    t.index ["position_id"], name: "index_employees_on_position_id"
+  end
+
+  create_table "positions", force: :cascade do |t|
+    t.string "position_name"
+    t.integer "positional_allowance", default: 0
+    t.integer "transportation_allowance", default: 0
+    t.integer "meal_allowances", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "salary", default: 0
   end
 
   create_table "rekaps", force: :cascade do |t|
