@@ -24,7 +24,7 @@ class Absent < ApplicationRecord
     )
 
     if create 
-      return true, "Absent berhasil dibuat", create
+      return true, "Absent berhasil dibuat"
     end
 
   end
@@ -108,7 +108,6 @@ class Absent < ApplicationRecord
       else
         salaries = salary_histories.pluck(:salary_per_day)  
         total_all = salaries.inject(0){|sum,x| sum + x }
-        Rails.logger.info "===================#{total_all}"
       end
 
       create = SalaryHistory.new

@@ -7,48 +7,48 @@ module Api::V1
 
     def index
 
-		@page = params[:page].present? ? params[:page] : 1
-		@per  = params[:per].present? ? params[:per] : 10
+  		@page = params[:page].present? ? params[:page] : 1
+  		@per  = params[:per].present? ? params[:per] : 10
 
-		@data = CashReceipt.all.page(@page).per(@per) || []
+  		@data = CashReceipt.all.page(@page).per(@per) || []
 
-      	if @data.empty?
-			json_response(@data, "Data tidak ada.", 404 )
-		else
-			json_response(@data, "Data berhasil didapatkan.", 200 )
-		end
+        	if @data.empty?
+  			json_response(@data, "Data tidak ada.", 404 )
+  		else
+  			json_response(@data, "Data berhasil didapatkan.", 200 )
+  		end
     end
 
     def show
     	@data = CashReceipt.find_by(id: params[:id]) || {}
 
-		if @data.empty?
-			json_response(@data, "Data tidak ada.", 404 )
-		else
-			json_response(@data, "Data berhasil didapatkan.", 200 )
-		end
-		
+  		if @data.empty?
+  			json_response(@data, "Data tidak ada.", 404 )
+  		else
+  			json_response(@data, "Data berhasil didapatkan.", 200 )
+  		end
+  		
     end
 
     def by_employee
     	@page = params[:page].present? ? params[:page] : 1
-		@per  = params[:per].present? ? params[:per] : 10
+  		@per  = params[:per].present? ? params[:per] : 10
 
-		@data = @employee.cash_receipts.page(@page).per(@per)
+  		@data = @employee.cash_receipts.page(@page).per(@per)
 
-		if @data.empty?
-			json_response(@data, "Data tidak ada.", 404 )
-		else
-			json_response(@data, "Data berhasil didapatkan.", 200 )
-		end
+  		if @data.empty?
+  			json_response(@data, "Data tidak ada.", 404 )
+  		else
+  			json_response(@data, "Data berhasil didapatkan.", 200 )
+  		end
     end
 
     def detail_by_employee
     	if @active.present?
-			json_response(@active.last, "Data berhasil didapatkan.", 200 )
-		else
-			json_response({}, "Data tidak ada.", 404 )
-		end
+  			json_response(@active.last, "Data berhasil didapatkan.", 200 )
+  		else
+  			json_response({}, "Data tidak ada.", 404 )
+  		end
     end
 
     def create
@@ -69,14 +69,14 @@ module Api::V1
 
     def update
     	if @active.present?
-			if @active.last.update_deduction
-				json_response(@active.last, "Data berhasil diubah.", 200 )
-			else
-				json_response({}, "Gagal mengubah data.", 400 )
-			end
-		else
-			json_response({}, "Data tidak ada.", 404 )
-		end
+  			if @active.last.update_deduction
+  				json_response(@active.last, "Data berhasil diubah.", 200 )
+  			else
+  				json_response({}, "Gagal mengubah data.", 400 )
+  			end
+  		else
+  			json_response({}, "Data tidak ada.", 404 )
+  		end
     end
 
 
