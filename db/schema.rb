@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_29_155327) do
+ActiveRecord::Schema.define(version: 2020_08_03_142043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,15 @@ ActiveRecord::Schema.define(version: 2020_07_29_155327) do
     t.string "owner"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "cash_receipt_histories", force: :cascade do |t|
+    t.bigint "cash_receipt_id"
+    t.integer "total_deduce"
+    t.integer "remaining_deduction"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cash_receipt_id"], name: "index_cash_receipt_histories_on_cash_receipt_id"
   end
 
   create_table "cash_receipts", force: :cascade do |t|
@@ -161,6 +170,7 @@ ActiveRecord::Schema.define(version: 2020_07_29_155327) do
   end
 
   add_foreign_key "absents", "employees", on_delete: :cascade
+  add_foreign_key "cash_receipt_histories", "cash_receipts"
   add_foreign_key "cash_receipts", "employees", on_delete: :cascade
   add_foreign_key "employees", "positions", on_delete: :cascade
   add_foreign_key "salary_histories", "employees", on_delete: :cascade

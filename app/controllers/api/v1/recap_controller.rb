@@ -22,12 +22,17 @@ module Api::V1
       histories = SalaryHistory.all
 
       @data = []
-
-      date_now = Date.parse(params[:date])
-      date_range = date_now.beginning_of_month..date_now.end_of_month
-
+      
+      tanggal = params[:date].to_datetime
+      
       employees.each do |employee|
-        absent = employee.salary_histories.where(employee_id: employee.id)
+
+        if employee.cash_receipts.active.present?
+          hutang = employee.cash_receipts.active
+          hutang.update_deduction(hutang.deduce_type, tanggal)
+        end
+
+        absent = employee.salary_histories.where(employee_id: employee.id, created_at: tanggal.beginning_of_month.beginning_of_day..tanggal.end_of_month.end_of_day)
         salaries = absent.pluck(:total_salary)  
         total_all = salaries.inject(0){|sum,x| sum + x }
         data = {
