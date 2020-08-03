@@ -1,7 +1,7 @@
 class CashReceipt < ApplicationRecord
 
 	belongs_to :employee, optional: true
-	has_many 	 :cash_receipt_histories, optional: true
+	has_many :cash_receipt_histories
 
 	enum deduce_type: [:monthly, :weekly]
 
