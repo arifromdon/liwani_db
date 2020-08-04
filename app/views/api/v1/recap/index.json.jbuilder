@@ -6,6 +6,7 @@ json.data @data.each do |data|
   json.status data.status
   total_salary = 0
   data.salary_histories.each do |salary| 
+    json.salary_per_day salary.salary_per_day
     json.work_hours salary.work_hours
     json.monthly_deduction salary.monthly_deduction
     json.total_deduction salary.total_deduction
@@ -13,7 +14,13 @@ json.data @data.each do |data|
     total_salary += salary.total_salary
   end
 
-  json.total_salary total_salary
+  data.cash_receipts do |item|
+    item.cash_receipt_histories do |dataDeduction|
+      json.item item
+    end
+  end
+
+  json.total_salary total_salary + data.position.positional_allowance + data.position.transportation_allowance + data.position.meal_allowances
 end
 
 json.meta do 

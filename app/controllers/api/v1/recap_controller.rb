@@ -77,6 +77,8 @@ module Api::V1
       tanggal = params[:month].to_datetime
 
       @histories = SalaryHistory.where(created_at: tanggal.beginning_of_month..tanggal.end_of_month)
+      @historiesDeduction = CashReceiptHistory.where(created_at: tanggal.beginning_of_month..tanggal.end_of_month)
+      # Rails.logger.info "=============#{CashReceiptHistory.where(created_at: tanggal.beginning_of_month..tanggal.end_of_month)}"
       @data = Employee.where(id: @histories.pluck(:employee_id))
 
       render "api/v1/recap/index.json.jbuilder"
