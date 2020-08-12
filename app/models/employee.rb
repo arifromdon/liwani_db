@@ -1,6 +1,5 @@
 class Employee < ApplicationRecord
 
-  # enum position: [:admin, :manager, :kepala_kebun, :pengawas, :karyawan, :petani]
   enum status: [:tetap, :kontrak, :harian]
   has_many :absents
   has_one :sallary
@@ -18,7 +17,10 @@ class Employee < ApplicationRecord
       phone_number: params[:phone_number],
       status: params[:status],
       join: params[:join],
-      position_id: position.id
+      position_id: position.id,
+      id_bank: params[:id_bank],
+      bank_name: params[:bank_name],
+      user_bank: params[:user_bank],
     )
 
     create_sallary(params, data.id)

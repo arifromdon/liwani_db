@@ -87,8 +87,8 @@ module Api::V1
 
     def recap_per_employee
       
-      @histories = SalaryHistory.where(employee_id: params[:id]).first 
-      @data = Employee.where(id: @histories.employee_id)
+      @histories = SalaryHistory.where(employee_id: params[:id])
+      @data = Employee.where(id: @histories.pluck(:employee_id))
 
       render "api/v1/recap/recap_per_employee.json.jbuilder"
     end

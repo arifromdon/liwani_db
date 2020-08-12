@@ -7,6 +7,9 @@ json.data @data.each do |data|
   json.join data.join
   json.leave_rasio data.leave_rasio
   json.position_id data.position_id
+  json.id_bank data.id_bank
+  json.bank_name data.bank_name
+  json.user_bank data.user_bank
   json.position data.position
 end
 
