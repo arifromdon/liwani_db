@@ -4,6 +4,9 @@ json.data @data.each do |data|
   json.phone_number data.phone_number
   json.position data.position
   json.status data.status
+  json.id_bank data.id_bank
+  json.bank_name data.bank_name
+  json.user_bank data.user_bank
   total_salary = 0
   data.salary_histories.each do |salary| 
     json.salary_per_day salary.salary_per_day
