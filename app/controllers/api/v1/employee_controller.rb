@@ -50,9 +50,13 @@ module Api::V1
       @data.employee_name = params[:employee_name]
       @data.email = params[:email]
       @data.phone_number = params[:phone_number]
-      @data.position = params[:position]
+      @data.position_id = params[:position_id]
       @data.status = params[:status]
       @data.join = params[:join]
+      @data.leave_rasio = params[:leave_rasio]
+      @data.id_bank = params[:id_bank]
+      @data.bank_name = params[:bank_name]
+      @data.user_bank = params[:user_bank]
 
       if @data.save
         json_response({ data: @data }, "Karyawan berhasil diubah", 200)
