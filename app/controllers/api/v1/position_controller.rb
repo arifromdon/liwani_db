@@ -8,18 +8,6 @@ module Api::V1
       json_response({ data: @data }, "Berhasil", 200)
     end
 
-    # def show
-
-    #   @data = Position.find_by( id: params[:id])
-
-    #   if @data.present?
-    #     json_response({ data: @data.absents }, "Data absent berhasil ditampilkan", 200)
-    #   else
-    #     json_response({}, "Data absent gagal ditampilkan", 404)
-    #   end
-
-    # end
-
     def create
 
       @data = Position.create_position(params)
@@ -33,7 +21,33 @@ module Api::V1
     end
 
     def update
+       @data = Position.find_by( id: params[:id] )
 
+      if @data.nil?
+        json_response({ data: {} }, "Data posisi tidak ditemukan", 404)
+      end
+
+      @data.position_name = params[:position_name]
+      @data.positional_allowance = params[:positional_allowance]
+      @data.transportation_allowance = params[:transportation_allowance]
+      @data.meal_allowances = params[:meal_allowances]
+      @data.salary = params[:salary]
+
+      if @data.save
+        json_response({ data: @data }, "Position berhasil diubah", 200)
+      else
+        json_response({}, "Position gagal diubah", 400)
+      end
+    end
+
+    def delete
+      @data = Position.find_by( id: params[:id] )
+
+      if @data.destroy!
+        json_response({ data: @data }, "Position berhasil dihapus", 200)
+      else
+        json_response({}, "Position gagal dihapus", 400)
+      end
     end
 
   end

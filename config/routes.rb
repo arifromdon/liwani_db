@@ -32,9 +32,9 @@ Rails.application.routes.draw do
 
       resource :positions, only:[] do
         get "/", to: "position#index"
-        get "/:id", to: "position#show"
         post "/create", to: "position#create"
         post "/update/:id", to: "position#update"
+        delete "/delete/:id", to: "position#delete"
       end
 
       resource :employees, only:[] do
