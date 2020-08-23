@@ -115,7 +115,6 @@ class Absent < ApplicationRecord
         total_all = total
       else
         salaries = salary_histories.pluck(:salary_per_day)
-        Rails.info.logger "=============#{salaries.inject(0){|sum,x| sum + x }}"
         if jabatan === 'petani'
           total_all = salaries
         else

@@ -68,8 +68,10 @@ module Api::V1
           createCutiHistory.start_date = params[:start_date]
           createCutiHistory.end_date = params[:end_date]
           createCutiHistory.status = params[:status]
-          createCutiHistory.sisa = params[:sisa]
+          createCutiHistory.sisa = @data.employee.leave_rasio - params[:sisa]
+          @data.employee.leave_rasio -= params[:sisa]
           createCutiHistory.description = params[:description]
+          createCutiHistory.employee_id = params[:employee_id]
         end
 
         if status.eql?("invalid_order")
@@ -81,7 +83,7 @@ module Api::V1
             if params[:status_absent] != 'masuk'
               @data.employee.save
               @data.create_history(params[:status_absent], params[:jabatan])
-              createCutiHistory.save!
+              createCutiHistory.save
             end
 
             json_response({ data: @data }, "Data absent berhasil diubah", 200)
