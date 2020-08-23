@@ -54,8 +54,7 @@ class Absent < ApplicationRecord
     return datas
   end
 
-  def create_history(status)
-
+  def create_history(status, jabatan)
     check = SalaryHistory.find_by(employee_id: self.employee.id, created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
 
     if check.present?
@@ -64,23 +63,32 @@ class Absent < ApplicationRecord
       now = DateTime.now
       datetime = DateTime.parse(now.strftime("%Y-%m-%dT17:00:00%z")).to_datetime
       zone = ActiveSupport::TimeZone.new("Asia/Jakarta")
+      salary_per_day = 0
 
       total_day = Absent.days_in_month(Time.now.month, Time.now.year)
-      salary_per_day = self.employee.position.salary / (total_day - 4)
+
+      if jabatan === 'petani'
+        salary_per_day = self.employee.position.salary
+      else
+        salary_per_day = self.employee.position.salary / (total_day - 4)
+      end
+
       checkMonth = Absent.where(employee_id: self.employee.id, created_at: Time.zone.now.beginning_of_month..Time.zone.now.end_of_month)
       salary_histories = SalaryHistory.where(employee_id: self.employee.id, created_at: Time.zone.now.beginning_of_month..Time.zone.now.end_of_month)
       total = 0
-
 
       if status === "alpa"
         total = 0
       elsif status === "izin"
         total = salary_per_day
-
         if checkMonth.where(status_absent: :izin).count > 2
           total = 0
         end
       elsif status === "cuti"
+        if self.employee.position.id == 6
+          total = 0
+        end
+
         total = salary_per_day
       elsif status === "keluar"
         total = salary_per_day
@@ -100,14 +108,19 @@ class Absent < ApplicationRecord
           total = 0
         end
       end
- 
+
       total_all = 0
 
       if salary_histories.empty?
         total_all = total
       else
-        salaries = salary_histories.pluck(:salary_per_day)  
-        total_all = salaries.inject(0){|sum,x| sum + x }
+        salaries = salary_histories.pluck(:salary_per_day)
+        Rails.info.logger "=============#{salaries.inject(0){|sum,x| sum + x }}"
+        if jabatan === 'petani'
+          total_all = salaries
+        else
+          total_all = salaries.inject(0){|sum,x| sum + x }
+        end
       end
 
       create = SalaryHistory.new

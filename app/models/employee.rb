@@ -1,6 +1,6 @@
 class Employee < ApplicationRecord
 
-  enum status: [:tetap, :kontrak, :harian]
+  enum status: [:tetap, :kontrak, :mingguan]
   has_many :absents
   has_one :sallary
   has_many :salary_histories

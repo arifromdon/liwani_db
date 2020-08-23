@@ -41,15 +41,15 @@ module Api::V1
     def update
 
       @data = Absent.find_by( employee_id: params[:id] )
-      Rails.logger.info "=================#{@data}"
+
       if @data.nil?
         json_response({ data: {} }, "Data absent tidak ditemukan", 404)
       else
+        createCutiHistory = CutiHistory.new
         status = ""
         if params[:status_absent] == 'masuk'
           @data.entry_hour = Time.now
         elsif params[:status_absent] == 'keluar'
-
           if !@data.status_absent.eql?("masuk")
             status = "invalid_order"
           else
@@ -64,8 +64,12 @@ module Api::V1
             @data.employee.total_absent_monthly += 1
             @data.employee.total_work_hour += work_hour
           end
-        elsif params[:status_absent] == 'alpa'
-          @data.status_absent = params[:status_absent]
+        elsif params[:status_absent] == 'cuti'
+          createCutiHistory.start_date = params[:start_date]
+          createCutiHistory.end_date = params[:end_date]
+          createCutiHistory.status = params[:status]
+          createCutiHistory.sisa = params[:sisa]
+          createCutiHistory.description = params[:description]
         end
 
         if status.eql?("invalid_order")
@@ -74,9 +78,10 @@ module Api::V1
           @data.status_absent = params[:status_absent]
 
           if @data.save
-            if params[:status_absent] == 'keluar'
+            if params[:status_absent] != 'masuk'
               @data.employee.save
-              @data.create_history(params[:status_absent])
+              @data.create_history(params[:status_absent], params[:jabatan])
+              createCutiHistory.save!
             end
 
             json_response({ data: @data }, "Data absent berhasil diubah", 200)
